@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColocApp - Tableau de Bord Partagé</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Main Style -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="app-sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-emoji">🏠</span>
+                    <span class="logo-text">Coloc<span>App</span></span>
+                </div>
+                <button class="mobile-close" id="mobile-sidebar-close" aria-label="Fermer le menu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="nav-link active" data-view="dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <span>Tableau de bord</span>
+                </a>
+                <a href="#calendar" class="nav-link" data-view="calendar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    <span>Calendrier</span>
+                </a>
+                <a href="#cleaning" class="nav-link" data-view="cleaning">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275z"/></svg>
+                    <span>Ménage</span>
+                </a>
+                <a href="#shopping" class="nav-link" data-view="shopping">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    <span>Courses</span>
+                </a>
+                <a href="#issues" class="nav-link" data-view="issues">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                    <span>Réparations</span>
+                </a>
+                <a href="#messages" class="nav-link" data-view="messages">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    <span>Mur de la coloc</span>
+                </a>
+                <a href="#inventory" class="nav-link" data-view="inventory">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                    <span>Inventaire</span>
+                </a>
+                <a href="#roommates" class="nav-link" data-view="roommates">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <span>Colocataires</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button id="btn-reset-demo" class="btn btn-text btn-small" title="Réinitialiser l'application">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><polyline points="3 3 3 8 8 8"/></svg>
+                    <span>Reset Données</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="main-wrapper">
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="mobile-toggle" id="mobile-sidebar-toggle" aria-label="Ouvrir le menu">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </button>
+                    <h1 class="view-title" id="page-view-title">Tableau de bord</h1>
+                </div>
+                
+                <div class="header-right">
+                    <!-- Current User Selector -->
+                    <div class="user-selector-container">
+                        <label for="current-user-select" class="user-label">Coloc actif :</label>
+                        <div class="custom-select-wrapper">
+                            <select id="current-user-select" class="user-select">
+                                <!-- Populated dynamically by app.js -->
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Theme Toggle Button -->
+                    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Changer le thème">
+                        <span class="theme-icon light-icon">☀️</span>
+                        <span class="theme-icon dark-icon">🌙</span>
+                    </button>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <!-- ========================================== -->
+                <!-- 1. DASHBOARD VIEW -->
+                <!-- ========================================== -->
+                <section id="view-dashboard" class="view-section active">
+                    <div class="dashboard-welcome">
+                        <h2 class="welcome-text">Bonjour la coloc ! 👋</h2>
+                        <p class="welcome-date" id="dashboard-date">Dimanche 7 Juin 2026</p>
+                    </div>
+                    
+                    <div class="dashboard-grid">
+                        <!-- Widget: Roommates Present -->
+                        <div class="dashboard-card card-present">
+                            <h3 class="card-title">Présents aujourd'hui</h3>
+                            <div class="present-list" id="widget-present-list">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Widget: Future Absences -->
+                        <div class="dashboard-card card-absences">
+                            <h3 class="card-title">Prochaines absences</h3>
+                            <div class="absences-summary-list" id="widget-absences-list">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Widget: Active Cleaning Tasks -->
+                        <div class="dashboard-card card-cleaning">
+                            <h3 class="card-title">Ménage de la semaine</h3>
+                            <div class="cleaning-summary-list" id="widget-cleaning-list">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Widget: Shopping List -->
+                        <div class="dashboard-card card-shopping">
+                            <h3 class="card-title">Liste de courses</h3>
+                            <div class="shopping-summary" id="widget-shopping-summary">
+                                <div class="shopping-count">0</div>
+                                <p class="shopping-label">articles à acheter</p>
+                            </div>
+                            <div class="shopping-quick-add">
+                                <input type="text" id="widget-shopping-input" placeholder="Ajouter rapidement...">
+                                <button id="widget-shopping-btn" class="btn btn-primary">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Widget: Open Repairs (Kanban) -->
+                        <div class="dashboard-card card-issues">
+                            <h3 class="card-title">Réparations en cours</h3>
+                            <div class="issues-summary-list" id="widget-issues-list">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Widget: Message Wall -->
+                        <div class="dashboard-card card-messages">
+                            <h3 class="card-title">Derniers messages</h3>
+                            <div class="messages-summary-list" id="widget-messages-list">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================== -->
+                <!-- 2. CALENDAR VIEW -->
+                <!-- ========================================== -->
+                <section id="view-calendar" class="view-section">
+                    <div class="calendar-controls">
+                        <div class="controls-left">
+                            <button id="cal-prev" class="btn btn-secondary">&lt;</button>
+                            <h3 id="cal-month-year" class="calendar-title">Juin 2026</h3>
+                            <button id="cal-next" class="btn btn-secondary">&gt;</button>
+                        </div>
+                        <div class="controls-right">
+                            <div class="toggle-group">
+                                <button id="cal-view-month" class="btn btn-toggle active">Mois</button>
+                                <button id="cal-view-week" class="btn btn-toggle">Semaine</button>
+                            </div>
+                            <button id="btn-add-absence" class="btn btn-primary">+ Indiquer une absence</button>
+                        </div>
+                    </div>
+
+                    <div class="calendar-layout">
+                        <!-- Calendar grid container -->
+                        <div class="calendar-grid-container">
+                            <!-- Days Header (Mon, Tue, etc.) -->
+                            <div class="calendar-days-header" id="calendar-days-header">
+                                <div>Lun</div><div>Mar</div><div>Mer</div><div>Jeu</div><div>Ven</div><div>Sam</div><div>Dim</div>
+                            </div>
+                            <!-- Days grid -->
+                            <div class="calendar-grid" id="calendar-grid-days">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Side panel for details -->
+                        <div class="calendar-sidebar-panel">
+                            <h4 class="sidebar-panel-title">Absences planifiées</h4>
+                            <div class="upcoming-absences-list" id="upcoming-absences-list">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================== -->
+                <!-- 3. CLEANING VIEW -->
+                <!-- ========================================== -->
+                <section id="view-cleaning" class="view-section">
+                    <div class="section-actions-header">
+                        <p class="section-subtitle">Chaque semaine, les tâches tournent automatiquement. Validez vos tâches une fois terminées.</p>
+                        <div class="actions-group">
+                            <button id="btn-rotate-cleaning" class="btn btn-secondary">🔄 Forcer la rotation</button>
+                            <button id="btn-add-cleaning-task" class="btn btn-primary">+ Nouvelle tâche</button>
+                        </div>
+                    </div>
+
+                    <div class="cleaning-container">
+                        <div class="cleaning-active-section">
+                            <h3 class="panel-section-title">Tâches de la semaine</h3>
+                            <div class="cleaning-grid" id="cleaning-tasks-grid">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <div class="cleaning-history-section">
+                            <h3 class="panel-section-title">Historique des réalisations</h3>
+                            <div class="cleaning-history-card">
+                                <ul class="cleaning-history-list" id="cleaning-history-list">
+                                    <!-- Populated dynamically -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================== -->
+                <!-- 4. SHOPPING VIEW -->
+                <!-- ========================================== -->
+                <section id="view-shopping" class="view-section">
+                    <div class="shopping-layout">
+                        <!-- Form and filters sidebar -->
+                        <div class="shopping-sidebar">
+                            <div class="card card-padding">
+                                <h4>Ajouter un produit</h4>
+                                <form id="shopping-add-form" class="flex-form">
+                                    <div class="form-group">
+                                        <label for="shop-item-name">Nom du produit</label>
+                                        <input type="text" id="shop-item-name" placeholder="Ex: Café grain, Éponge..." required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="shop-item-category">Catégorie</label>
+                                        <select id="shop-item-category">
+                                            <option value="cuisine">🍳 Cuisine</option>
+                                            <option value="salle-de-bain">🛁 Salle de bain</option>
+                                            <option value="entretien">🧹 Entretien</option>
+                                            <option value="divers">📦 Divers</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-full">Ajouter à la liste</button>
+                                </form>
+                            </div>
+
+                            <div class="card card-padding margin-top-m">
+                                <h4>Filtres & Statut</h4>
+                                <div class="filter-group">
+                                    <button class="btn btn-filter active" data-filter="all">Tous</button>
+                                    <button class="btn btn-filter" data-filter="active">À acheter</button>
+                                    <button class="btn btn-filter" data-filter="completed">Achetés</button>
+                                </div>
+                                <hr class="divider">
+                                <div class="filter-group-categories">
+                                    <label class="filter-label">Filtrer par catégorie :</label>
+                                    <div class="category-pills" id="category-pills-filter">
+                                        <button class="pill active" data-cat="all">Toutes</button>
+                                        <button class="pill" data-cat="cuisine">Cuisine</button>
+                                        <button class="pill" data-cat="salle-de-bain">Salle de bain</button>
+                                        <button class="pill" data-cat="entretien">Entretien</button>
+                                        <button class="pill" data-cat="divers">Divers</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Shopping items list -->
+                        <div class="shopping-list-container">
+                            <div class="shopping-list-header">
+                                <h3>Liste commune</h3>
+                                <button id="btn-clear-completed-shopping" class="btn btn-text btn-small">Supprimer les articles achetés</button>
+                            </div>
+                            <div class="shopping-items-grid" id="shopping-items-list">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================== -->
+                <!-- 5. REPAIRS (KANBAN) VIEW -->
+                <!-- ========================================== -->
+                <section id="view-issues" class="view-section">
+                    <div class="section-actions-header">
+                        <p class="section-subtitle">Signalez les réparations et déplacez les cartes pour suivre leur avancement. Glissez-déposez ou utilisez les flèches.</p>
+                        <button id="btn-add-issue" class="btn btn-primary">+ Signaler un problème</button>
+                    </div>
+
+                    <div class="kanban-board">
+                        <!-- Column: To Do -->
+                        <div class="kanban-column" id="kanban-todo" data-status="todo">
+                            <div class="kanban-column-header">
+                                <h4>À FAIRE <span class="column-count" id="count-todo">0</span></h4>
+                            </div>
+                            <div class="kanban-cards-container" id="container-todo">
+                                <!-- Cards populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Column: In Progress -->
+                        <div class="kanban-column" id="kanban-in-progress" data-status="in-progress">
+                            <div class="kanban-column-header">
+                                <h4>EN COURS <span class="column-count" id="count-in-progress">0</span></h4>
+                            </div>
+                            <div class="kanban-cards-container" id="container-in-progress">
+                                <!-- Cards populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Column: Resolved -->
+                        <div class="kanban-column" id="kanban-done" data-status="done">
+                            <div class="kanban-column-header">
+                                <h4>RÉSOLU <span class="column-count" id="count-done">0</span></h4>
+                            </div>
+                            <div class="kanban-cards-container" id="container-done">
+                                <!-- Cards populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================== -->
+                <!-- 6. MESSAGE WALL VIEW -->
+                <!-- ========================================== -->
+                <section id="view-messages" class="view-section">
+                    <div class="messages-layout">
+                        <!-- Message submission block -->
+                        <div class="messages-input-card card">
+                            <form id="message-post-form">
+                                <div class="message-input-wrapper">
+                                    <textarea id="message-text-input" placeholder="Partagez quelque chose avec la coloc..." required rows="3"></textarea>
+                                </div>
+                                <div class="message-form-footer">
+                                    <div class="emoji-selector-inline">
+                                        <span class="emoji-selector-label">Humeur :</span>
+                                        <div class="mood-emojis" id="message-mood-emojis">
+                                            <span class="mood-emoji active" data-emoji="📢">📢</span>
+                                            <span class="mood-emoji" data-emoji="❤️">❤️</span>
+                                            <span class="mood-emoji" data-emoji="🎉">🎉</span>
+                                            <span class="mood-emoji" data-emoji="🍕">🍕</span>
+                                            <span class="mood-emoji" data-emoji="⚠️">⚠️</span>
+                                            <span class="mood-emoji" data-emoji="💡">💡</span>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Publier</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Messages stream -->
+                        <div class="messages-stream" id="messages-stream-list">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================== -->
+                <!-- 7. INVENTORY VIEW -->
+                <!-- ========================================== -->
+                <section id="view-inventory" class="view-section">
+                    <div class="inventory-controls">
+                        <div class="search-bar-wrapper">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="inventory-search" placeholder="Rechercher un objet...">
+                        </div>
+                        <button id="btn-add-inventory" class="btn btn-primary">+ Ajouter un objet</button>
+                    </div>
+
+                    <div class="inventory-grid" id="inventory-items-grid">
+                        <!-- Populated dynamically -->
+                    </div>
+                </section>
+
+                <!-- ========================================== -->
+                <!-- 8. ROOMMATES MANAGEMENT VIEW -->
+                <!-- ========================================== -->
+                <section id="view-roommates" class="view-section">
+                    <div class="section-actions-header">
+                        <p class="section-subtitle">Gérez les membres de la colocation, leurs avatars et couleurs d'affichage.</p>
+                        <button id="btn-add-roommate" class="btn btn-primary">+ Ajouter un colocataire</button>
+                    </div>
+
+                    <div class="roommates-grid" id="roommates-list-grid">
+                        <!-- Populated dynamically -->
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- MODALS SECTION -->
+    <!-- ======================================================= -->
+
+    <!-- Roommate Modal (Add/Edit) -->
+    <div class="modal-backdrop" id="modal-roommate">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="roommate-modal-title">Ajouter un colocataire</h3>
+                <button class="modal-close" data-close="modal-roommate">&times;</button>
+            </div>
+            <form id="form-roommate">
+                <input type="hidden" id="roommate-edit-id">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="roommate-name">Nom complet ou prénom</label>
+                        <input type="text" id="roommate-name" required placeholder="Ex: Alice">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Choisissez un Emoji Avatar</label>
+                        <div class="emoji-picker-grid" id="roommate-emoji-picker">
+                            <span class="picker-emoji active" data-emoji="👩‍🎨">👩‍🎨</span>
+                            <span class="picker-emoji" data-emoji="👨‍💻">👨‍💻</span>
+                            <span class="picker-emoji" data-emoji="👩‍🌾">👩‍🌾</span>
+                            <span class="picker-emoji" data-emoji="👨‍🍳">👨‍🍳</span>
+                            <span class="picker-emoji" data-emoji="🦊">🦊</span>
+                            <span class="picker-emoji" data-emoji="🦄">🦄</span>
+                            <span class="picker-emoji" data-emoji="🦁">🦁</span>
+                            <span class="picker-emoji" data-emoji="🐼">🐼</span>
+                            <span class="picker-emoji" data-emoji="🤖">🤖</span>
+                            <span class="picker-emoji" data-emoji="🐱">🐱</span>
+                            <span class="picker-emoji" data-emoji="🐶">🐶</span>
+                            <span class="picker-emoji" data-emoji="🎸">🎸</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="roommate-hue">Couleur distinctive (Teinte)</label>
+                        <input type="range" id="roommate-hue" min="0" max="360" value="180" class="hue-slider">
+                        <div class="hue-preview" id="roommate-hue-preview"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-close="modal-roommate">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Calendar Absence Modal (Add/Edit) -->
+    <div class="modal-backdrop" id="modal-calendar">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="calendar-modal-title">Indiquer une absence / présence</h3>
+                <button class="modal-close" data-close="modal-calendar">&times;</button>
+            </div>
+            <form id="form-calendar">
+                <input type="hidden" id="calendar-edit-id">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="cal-select-roommate">Colocataire concerné</label>
+                        <select id="cal-select-roommate" required>
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cal-status-type">Type de statut</label>
+                        <select id="cal-status-type" required>
+                            <option value="absent">❌ Absent</option>
+                            <option value="vacation">🌴 Vacances</option>
+                            <option value="trip">✈️ Déplacement</option>
+                            <option value="present">🏡 Présent (Retour forcé)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label for="cal-start-date">Date de début</label>
+                            <input type="date" id="cal-start-date" required>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="cal-end-date">Date de fin</label>
+                            <input type="date" id="cal-end-date" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cal-note">Note / Commentaire (Optionnel)</label>
+                        <input type="text" id="cal-note" placeholder="Ex: Chez mes parents, voyage à Londres...">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-close="modal-calendar">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Cleaning Task Modal (Add/Edit) -->
+    <div class="modal-backdrop" id="modal-cleaning">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="cleaning-modal-title">Nouvelle tâche ménagère</h3>
+                <button class="modal-close" data-close="modal-cleaning">&times;</button>
+            </div>
+            <form id="form-cleaning">
+                <input type="hidden" id="cleaning-edit-id">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="cleaning-name">Nom de la tâche</label>
+                        <input type="text" id="cleaning-name" required placeholder="Ex: Poubelles, Vitres...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cleaning-desc">Description / Instructions</label>
+                        <textarea id="cleaning-desc" rows="2" placeholder="Ex: Vider le bac jaune et descendre le verre au conteneur..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cleaning-assignee">Responsable initial</label>
+                        <select id="cleaning-assignee" required>
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-close="modal-cleaning">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Issue/Repairs Modal (Add/Edit) -->
+    <div class="modal-backdrop" id="modal-issue">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="issue-modal-title">Signaler un problème</h3>
+                <button class="modal-close" data-close="modal-issue">&times;</button>
+            </div>
+            <form id="form-issue">
+                <input type="hidden" id="issue-edit-id">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="issue-title">Titre du problème</label>
+                        <input type="text" id="issue-title" required placeholder="Ex: Fuite d'eau, Poignée cassée...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="issue-desc">Description</label>
+                        <textarea id="issue-desc" rows="3" placeholder="Description du problème ou instructions de réparation..."></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label for="issue-priority">Priorité</label>
+                            <select id="issue-priority" required>
+                                <option value="low">🟢 Basse</option>
+                                <option value="medium">🟡 Moyenne</option>
+                                <option value="high">🔴 Haute</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="issue-assignee">Responsable</label>
+                            <select id="issue-assignee" required>
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-close="modal-issue">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Inventory Modal (Add/Edit) -->
+    <div class="modal-backdrop" id="modal-inventory">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="inventory-modal-title">Ajouter un objet</h3>
+                <button class="modal-close" data-close="modal-inventory">&times;</button>
+            </div>
+            <form id="form-inventory">
+                <input type="hidden" id="inventory-edit-id">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inventory-name">Nom de l'objet</label>
+                        <input type="text" id="inventory-name" required placeholder="Ex: Aspirateur Dyson, Appareil à Raclette...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inventory-desc">Description / Emplacement</label>
+                        <textarea id="inventory-desc" rows="2" placeholder="Où est rangé l'objet, instructions d'usage..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inventory-owner">Propriétaire</label>
+                        <select id="inventory-owner" required>
+                            <option value="coloc">👥 Commun (La colocation)</option>
+                            <!-- Populated dynamically with roommates -->
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label for="inventory-status">Disponibilité</label>
+                            <select id="inventory-status" required>
+                                <option value="available">✅ Disponible</option>
+                                <option value="borrowed">🔄 Emprunté</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="inventory-borrower">Emprunteur (si applicable)</label>
+                            <select id="inventory-borrower">
+                                <option value="">-- Aucun --</option>
+                                <!-- Populated dynamically with roommates -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-close="modal-inventory">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main App Code Integration -->
+    <script src="js/storage.js"></script>
+    <script src="js/calendar.js"></script>
+    <script src="js/cleaning.js"></script>
+    <script src="js/shopping.js"></script>
+    <script src="js/issues.js"></script>
+    <script src="js/messages.js"></script>
+    <script src="js/inventory.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

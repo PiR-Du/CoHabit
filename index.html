@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Supabase Client JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Main Style -->
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -46,25 +48,25 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                     <span>Réparations</span>
                 </a>
-                <a href="#messages" class="nav-link" data-view="messages">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                    <span>Mur de la coloc</span>
-                </a>
-                <a href="#inventory" class="nav-link" data-view="inventory">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-                    <span>Inventaire</span>
+                <a href="#expenses" class="nav-link" data-view="expenses">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    <span>Dépenses communes</span>
                 </a>
                 <a href="#roommates" class="nav-link" data-view="roommates">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                     <span>Colocataires</span>
                 </a>
+                <a href="#config" class="nav-link" data-view="config">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    <span>Configuration</span>
+                </a>
             </nav>
             
             <div class="sidebar-footer">
-                <button id="btn-reset-demo" class="btn btn-text btn-small" title="Réinitialiser l'application">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><polyline points="3 3 3 8 8 8"/></svg>
-                    <span>Reset Données</span>
-                </button>
+                <a href="#config" class="nav-link" data-view="config" style="font-size: 0.8rem; opacity: 0.7;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    <span>Paramètres Supabase</span>
+                </a>
             </div>
         </aside>
 
@@ -79,6 +81,12 @@
                 </div>
                 
                 <div class="header-right">
+                    <!-- Supabase Connection Status Badge -->
+                    <div class="supabase-status-badge" id="supabase-status-badge" title="Cliquer pour configurer la base de données">
+                        <span class="status-dot disconnected" id="supabase-status-dot"></span>
+                        <span class="status-text" id="supabase-status-text">Hors-ligne (LocalStorage)</span>
+                    </div>
+
                     <!-- Current User Selector -->
                     <div class="user-selector-container">
                         <label for="current-user-select" class="user-label">Coloc actif :</label>
@@ -153,10 +161,10 @@
                             </div>
                         </div>
 
-                        <!-- Widget: Message Wall -->
-                        <div class="dashboard-card card-messages">
-                            <h3 class="card-title">Derniers messages</h3>
-                            <div class="messages-summary-list" id="widget-messages-list">
+                        <!-- Widget: Tricount Balances Summary -->
+                        <div class="dashboard-card card-expenses">
+                            <h3 class="card-title">Dépenses & Soldes</h3>
+                            <div class="expenses-summary-list" id="widget-expenses-list">
                                 <!-- Populated dynamically -->
                             </div>
                         </div>
@@ -174,11 +182,7 @@
                             <button id="cal-next" class="btn btn-secondary">&gt;</button>
                         </div>
                         <div class="controls-right">
-                            <div class="toggle-group">
-                                <button id="cal-view-month" class="btn btn-toggle active">Mois</button>
-                                <button id="cal-view-week" class="btn btn-toggle">Semaine</button>
-                            </div>
-                            <button id="btn-add-absence" class="btn btn-primary">+ Indiquer une absence</button>
+                            <button id="btn-add-absence" class="btn btn-primary">+ Ajouter un événement / absence</button>
                         </div>
                     </div>
 
@@ -189,15 +193,15 @@
                             <div class="calendar-days-header" id="calendar-days-header">
                                 <div>Lun</div><div>Mar</div><div>Mer</div><div>Jeu</div><div>Ven</div><div>Sam</div><div>Dim</div>
                             </div>
-                            <!-- Days grid -->
-                            <div class="calendar-grid" id="calendar-grid-days">
-                                <!-- Populated dynamically -->
+                            <!-- Weeks container for multi-day events positioning -->
+                            <div class="calendar-weeks-container" id="calendar-weeks-container">
+                                <!-- Populated dynamically by calendar.js -->
                             </div>
                         </div>
 
                         <!-- Side panel for details -->
                         <div class="calendar-sidebar-panel">
-                            <h4 class="sidebar-panel-title">Absences planifiées</h4>
+                            <h4 class="sidebar-panel-title">Événements & Absences</h4>
                             <div class="upcoming-absences-list" id="upcoming-absences-list">
                                 <!-- Populated dynamically -->
                             </div>
@@ -340,59 +344,48 @@
                 </section>
 
                 <!-- ========================================== -->
-                <!-- 6. MESSAGE WALL VIEW -->
+                <!-- 6. EXPENSES (TRICOUNT) VIEW -->
                 <!-- ========================================== -->
-                <section id="view-messages" class="view-section">
-                    <div class="messages-layout">
-                        <!-- Message submission block -->
-                        <div class="messages-input-card card">
-                            <form id="message-post-form">
-                                <div class="message-input-wrapper">
-                                    <textarea id="message-text-input" placeholder="Partagez quelque chose avec la coloc..." required rows="3"></textarea>
-                                </div>
-                                <div class="message-form-footer">
-                                    <div class="emoji-selector-inline">
-                                        <span class="emoji-selector-label">Humeur :</span>
-                                        <div class="mood-emojis" id="message-mood-emojis">
-                                            <span class="mood-emoji active" data-emoji="📢">📢</span>
-                                            <span class="mood-emoji" data-emoji="❤️">❤️</span>
-                                            <span class="mood-emoji" data-emoji="🎉">🎉</span>
-                                            <span class="mood-emoji" data-emoji="🍕">🍕</span>
-                                            <span class="mood-emoji" data-emoji="⚠️">⚠️</span>
-                                            <span class="mood-emoji" data-emoji="💡">💡</span>
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Publier</button>
-                                </div>
-                            </form>
+                <section id="view-expenses" class="view-section">
+                    <div class="section-actions-header">
+                        <p class="section-subtitle">Gérez les dépenses communes, observez qui doit combien à qui et équilibrez les comptes.</p>
+                        <button id="btn-add-expense" class="btn btn-primary">+ Ajouter une dépense</button>
+                    </div>
+
+                    <div class="expenses-layout">
+                        <!-- Left: Expenses History List -->
+                        <div class="expenses-list-container">
+                            <div class="shopping-list-header">
+                                <h3>Historique des dépenses</h3>
+                            </div>
+                            <div class="expenses-items-grid" id="expenses-items-list">
+                                <!-- Populated dynamically -->
+                            </div>
                         </div>
 
-                        <!-- Messages stream -->
-                        <div class="messages-stream" id="messages-stream-list">
-                            <!-- Populated dynamically -->
+                        <!-- Right: Synthesis, Balances & Suggested Transfers -->
+                        <div class="expenses-sidebar">
+                            <!-- Roommates Balances -->
+                            <div class="card card-padding">
+                                <h4 class="sidebar-panel-title">Soldes de la coloc</h4>
+                                <div class="balances-list" id="expenses-balances-list">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+
+                            <!-- Suggested Reimbursements -->
+                            <div class="card card-padding margin-top-m">
+                                <h4 class="sidebar-panel-title">Remboursements suggérés</h4>
+                                <div class="transfers-list" id="expenses-transfers-list">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
 
                 <!-- ========================================== -->
-                <!-- 7. INVENTORY VIEW -->
-                <!-- ========================================== -->
-                <section id="view-inventory" class="view-section">
-                    <div class="inventory-controls">
-                        <div class="search-bar-wrapper">
-                            <span class="search-icon">🔍</span>
-                            <input type="text" id="inventory-search" placeholder="Rechercher un objet...">
-                        </div>
-                        <button id="btn-add-inventory" class="btn btn-primary">+ Ajouter un objet</button>
-                    </div>
-
-                    <div class="inventory-grid" id="inventory-items-grid">
-                        <!-- Populated dynamically -->
-                    </div>
-                </section>
-
-                <!-- ========================================== -->
-                <!-- 8. ROOMMATES MANAGEMENT VIEW -->
+                <!-- 7. ROOMMATES MANAGEMENT VIEW -->
                 <!-- ========================================== -->
                 <section id="view-roommates" class="view-section">
                     <div class="section-actions-header">
@@ -402,6 +395,148 @@
 
                     <div class="roommates-grid" id="roommates-list-grid">
                         <!-- Populated dynamically -->
+                    </div>
+                </section>
+
+                <!-- ========================================== -->
+                <!-- 8. CONFIGURATION (SUPABASE) VIEW -->
+                <!-- ========================================== -->
+                <section id="view-config" class="view-section">
+                    <div class="config-layout">
+                        <!-- Credentials Settings -->
+                        <div class="card card-padding">
+                            <h3>Connexion Base de données (Supabase)</h3>
+                            <p class="section-subtitle margin-top-m">Connectez votre propre base de données Supabase pour synchroniser en temps réel les données de la colocation sur tous les appareils.</p>
+                            
+                            <form id="form-supabase-config" class="margin-top-m">
+                                <div class="form-group">
+                                    <label for="config-supabase-url">URL du projet Supabase</label>
+                                    <input type="url" id="config-supabase-url" placeholder="https://xxxxxxxxxxxxxx.supabase.co" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="config-supabase-key">Clé publique (Anon Key)</label>
+                                    <input type="text" id="config-supabase-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." required>
+                                </div>
+                                
+                                <div class="actions-group margin-top-m">
+                                    <button type="submit" class="btn btn-primary">Enregistrer et Connecter</button>
+                                    <button type="button" id="btn-disconnect-supabase" class="btn btn-secondary">Déconnecter (Mode Local)</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Sync/Upload tool -->
+                        <div class="card card-padding margin-top-m">
+                            <h3>Synchronisation & Migration</h3>
+                            <p class="section-subtitle margin-top-m">Vous avez des données locales existantes que vous souhaitez exporter vers votre nouvelle base de données Supabase ? Utilisez le bouton ci-dessous.</p>
+                            <div class="margin-top-m">
+                                <button id="btn-push-local-data" class="btn btn-secondary">Pousser les données locales sur Supabase 📤</button>
+                            </div>
+                        </div>
+
+                        <!-- SQL Instructions -->
+                        <div class="card card-padding margin-top-m">
+                            <h3>Initialiser la base de données (SQL)</h3>
+                            <p class="section-subtitle margin-top-m">Copiez le script SQL ci-dessous et exécutez-le dans la console SQL de votre projet Supabase pour créer automatiquement les tables requises.</p>
+                            
+                            <div class="sql-code-container margin-top-m">
+                                <pre id="sql-code-block"><code>-- 1. Table des Colocataires
+CREATE TABLE IF NOT EXISTS public.cohabit_roommates (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    emoji TEXT,
+    hue INTEGER,
+    color TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 2. Table du Calendrier (Événements & Absences)
+CREATE TABLE IF NOT EXISTS public.cohabit_calendar (
+    id TEXT PRIMARY KEY,
+    roommate_id TEXT REFERENCES public.cohabit_roommates(id) ON DELETE SET NULL,
+    type TEXT NOT NULL,
+    start_date TEXT NOT NULL,
+    start_time TEXT,
+    end_date TEXT NOT NULL,
+    end_time TEXT,
+    note TEXT,
+    title TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 3. Table des Tâches Ménagères
+CREATE TABLE IF NOT EXISTS public.cohabit_cleaning_tasks (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT,
+    responsible_id TEXT REFERENCES public.cohabit_roommates(id) ON DELETE SET NULL,
+    status TEXT NOT NULL,
+    last_done TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 4. Table d'Historique du Ménage
+CREATE TABLE IF NOT EXISTS public.cohabit_cleaning_history (
+    id TEXT PRIMARY KEY,
+    task_name TEXT NOT NULL,
+    roommate_id TEXT REFERENCES public.cohabit_roommates(id) ON DELETE SET NULL,
+    date TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 5. Table de Liste de Courses
+CREATE TABLE IF NOT EXISTS public.cohabit_shopping (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    category TEXT,
+    added_by_id TEXT REFERENCES public.cohabit_roommates(id) ON DELETE SET NULL,
+    date TEXT NOT NULL,
+    checked BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 6. Table des Réparations (Kanban)
+CREATE TABLE IF NOT EXISTS public.cohabit_issues (
+    id TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT,
+    priority TEXT NOT NULL,
+    assignee_id TEXT REFERENCES public.cohabit_roommates(id) ON DELETE SET NULL,
+    status TEXT NOT NULL,
+    date TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 7. Table des Dépenses (Tricount)
+CREATE TABLE IF NOT EXISTS public.cohabit_expenses (
+    id TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    amount NUMERIC(10, 2) NOT NULL,
+    date TEXT NOT NULL,
+    payer_id TEXT REFERENCES public.cohabit_roommates(id) ON DELETE SET NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 8. Table des Participants aux Dépenses
+CREATE TABLE IF NOT EXISTS public.cohabit_expense_participants (
+    id TEXT PRIMARY KEY,
+    expense_id TEXT REFERENCES public.cohabit_expenses(id) ON DELETE CASCADE,
+    roommate_id TEXT REFERENCES public.cohabit_roommates(id) ON DELETE CASCADE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Désactiver la RLS pour simplifier l'accès public
+ALTER TABLE public.cohabit_roommates DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.cohabit_calendar DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.cohabit_cleaning_tasks DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.cohabit_cleaning_history DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.cohabit_shopping DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.cohabit_issues DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.cohabit_expenses DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.cohabit_expense_participants DISABLE ROW LEVEL SECURITY;</code></pre>
+                                <button type="button" id="btn-copy-sql" class="btn btn-secondary btn-small margin-top-s">Copier le script SQL</button>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </main>
@@ -459,31 +594,34 @@
         </div>
     </div>
 
-    <!-- Calendar Absence Modal (Add/Edit) -->
+    <!-- Calendar Event/Absence Modal (Add/Edit) -->
     <div class="modal-backdrop" id="modal-calendar">
         <div class="modal-card">
             <div class="modal-header">
-                <h3 id="calendar-modal-title">Indiquer une absence / présence</h3>
+                <h3 id="calendar-modal-title">Ajouter un événement / absence</h3>
                 <button class="modal-close" data-close="modal-calendar">&times;</button>
             </div>
             <form id="form-calendar">
                 <input type="hidden" id="calendar-edit-id">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="cal-select-roommate">Colocataire concerné</label>
-                        <select id="cal-select-roommate" required>
+                        <label for="cal-status-type">Type d'événement</label>
+                        <select id="cal-status-type" required>
+                            <option value="roommate_absence">❌ Absence d'un colocataire</option>
+                            <option value="coloc_event">🏡 Événement à la colocation</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="cal-group-roommate">
+                        <label for="cal-select-roommate">Colocataire concerné (pour absence)</label>
+                        <select id="cal-select-roommate">
                             <!-- Populated dynamically -->
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="cal-status-type">Type de statut</label>
-                        <select id="cal-status-type" required>
-                            <option value="absent">❌ Absent</option>
-                            <option value="vacation">🌴 Vacances</option>
-                            <option value="trip">✈️ Déplacement</option>
-                            <option value="present">🏡 Présent (Retour forcé)</option>
-                        </select>
+                        <label for="cal-title">Titre / Label</label>
+                        <input type="text" id="cal-title" required placeholder="Ex: Vacances, Soirée jeux, Visite parents...">
                     </div>
 
                     <div class="form-row">
@@ -492,14 +630,25 @@
                             <input type="date" id="cal-start-date" required>
                         </div>
                         <div class="form-group col-6">
+                            <label for="cal-start-time">Heure de début</label>
+                            <input type="time" id="cal-start-time" required value="08:00">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-6">
                             <label for="cal-end-date">Date de fin</label>
                             <input type="date" id="cal-end-date" required>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="cal-end-time">Heure de fin</label>
+                            <input type="time" id="cal-end-time" required value="18:00">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="cal-note">Note / Commentaire (Optionnel)</label>
-                        <input type="text" id="cal-note" placeholder="Ex: Chez mes parents, voyage à Londres...">
+                        <input type="text" id="cal-note" placeholder="Ex: Vol Ryanair FR304, ramener des bières...">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -590,53 +739,52 @@
         </div>
     </div>
 
-    <!-- Inventory Modal (Add/Edit) -->
-    <div class="modal-backdrop" id="modal-inventory">
+    <!-- Expense Modal (Add/Edit) -->
+    <div class="modal-backdrop" id="modal-expense">
         <div class="modal-card">
             <div class="modal-header">
-                <h3 id="inventory-modal-title">Ajouter un objet</h3>
-                <button class="modal-close" data-close="modal-inventory">&times;</button>
+                <h3 id="expense-modal-title">Ajouter une dépense</h3>
+                <button class="modal-close" data-close="modal-expense">&times;</button>
             </div>
-            <form id="form-inventory">
-                <input type="hidden" id="inventory-edit-id">
+            <form id="form-expense">
+                <input type="hidden" id="expense-edit-id">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="inventory-name">Nom de l'objet</label>
-                        <input type="text" id="inventory-name" required placeholder="Ex: Aspirateur Dyson, Appareil à Raclette...">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inventory-desc">Description / Emplacement</label>
-                        <textarea id="inventory-desc" rows="2" placeholder="Où est rangé l'objet, instructions d'usage..."></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inventory-owner">Propriétaire</label>
-                        <select id="inventory-owner" required>
-                            <option value="coloc">👥 Commun (La colocation)</option>
-                            <!-- Populated dynamically with roommates -->
-                        </select>
+                        <label for="expense-title">Titre de la dépense</label>
+                        <input type="text" id="expense-title" required placeholder="Ex: Courses Carrefour, Électricité...">
                     </div>
 
                     <div class="form-row">
                         <div class="form-group col-6">
-                            <label for="inventory-status">Disponibilité</label>
-                            <select id="inventory-status" required>
-                                <option value="available">✅ Disponible</option>
-                                <option value="borrowed">🔄 Emprunté</option>
-                            </select>
+                            <label for="expense-amount">Montant (€)</label>
+                            <input type="number" id="expense-amount" step="0.01" min="0.01" required placeholder="0.00">
                         </div>
                         <div class="form-group col-6">
-                            <label for="inventory-borrower">Emprunteur (si applicable)</label>
-                            <select id="inventory-borrower">
-                                <option value="">-- Aucun --</option>
-                                <!-- Populated dynamically with roommates -->
-                            </select>
+                            <label for="expense-date">Date</label>
+                            <input type="date" id="expense-date" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expense-payer">Payé par</label>
+                        <select id="expense-payer" required>
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Participants concernés</label>
+                        <div class="participants-select-header">
+                            <button type="button" id="btn-expense-select-all" class="btn btn-text btn-small">Tout cocher</button>
+                            <button type="button" id="btn-expense-deselect-all" class="btn btn-text btn-small">Tout décocher</button>
+                        </div>
+                        <div class="participants-checkbox-list" id="expense-participants-list">
+                            <!-- Populated dynamically with roommates checkboxes -->
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-close="modal-inventory">Annuler</button>
+                    <button type="button" class="btn btn-secondary" data-close="modal-expense">Annuler</button>
                     <button type="submit" class="btn btn-primary">Enregistrer</button>
                 </div>
             </form>
@@ -649,8 +797,7 @@
     <script src="js/cleaning.js"></script>
     <script src="js/shopping.js"></script>
     <script src="js/issues.js"></script>
-    <script src="js/messages.js"></script>
-    <script src="js/inventory.js"></script>
+    <script src="js/expenses.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

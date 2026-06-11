@@ -1,5 +1,5 @@
 /**
- * ColocApp - Main Coordinator & Roommate Manager
+ * ColocApp - Main Coordinator & Roommate Manager (app.js)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -23,11 +23,19 @@ const App = {
         // Bind Roommate management events
         this.bindRoommateEvents();
 
+        // Bind Configuration events
+        this.bindConfigEvents();
+
         // Register global helpers
         this.registerGlobalHelpers();
 
         // Populate roommate dropdowns
         this.updateRoommateDropdowns();
+
+        // Initial connection status check
+        if (window.StorageManager) {
+            window.StorageManager.updateUIConnectionStatus();
+        }
 
         // Initial view load
         this.handleRouting();
@@ -46,7 +54,9 @@ const App = {
     },
 
     saveSettings() {
+        const currentSettings = StorageManager.getSettings();
         StorageManager.saveSettings({
+            ...currentSettings,
             activeRoommateId: this.state.activeRoommateId,
             theme: this.state.theme
         });
@@ -97,16 +107,6 @@ const App = {
             });
         }
 
-        // Reset demo data button
-        const resetBtn = document.getElementById('btn-reset-demo');
-        if (resetBtn) {
-            resetBtn.addEventListener('click', () => {
-                if (confirm('Voulez-vous vraiment réinitialiser toutes les données aux valeurs de démonstration ?')) {
-                    StorageManager.resetAll();
-                }
-            });
-        }
-
         // Current user selection
         const userSelect = document.getElementById('current-user-select');
         if (userSelect) {
@@ -134,11 +134,19 @@ const App = {
                 }
             });
         });
+
+        // Click on status badge goes to config
+        const statusBadge = document.getElementById('supabase-status-badge');
+        if (statusBadge) {
+            statusBadge.addEventListener('click', () => {
+                this.switchView('config');
+            });
+        }
     },
 
     handleRouting() {
         const hash = window.location.hash.replace('#', '');
-        const validViews = ['dashboard', 'calendar', 'cleaning', 'shopping', 'issues', 'messages', 'inventory', 'roommates'];
+        const validViews = ['dashboard', 'calendar', 'cleaning', 'shopping', 'issues', 'expenses', 'roommates', 'config'];
         
         if (hash && validViews.includes(hash)) {
             this.switchView(hash);
@@ -175,13 +183,13 @@ const App = {
         // Set Header Title
         const viewTitles = {
             dashboard: 'Tableau de bord',
-            calendar: 'Calendrier de présence',
+            calendar: 'Calendrier de la coloc',
             cleaning: 'Gestion du ménage',
             shopping: 'Liste de courses',
             issues: 'Tableau des réparations',
-            messages: 'Mur de la coloc',
-            inventory: 'Inventaire partagé',
-            roommates: 'Membres de la coloc'
+            expenses: 'Dépenses communes',
+            roommates: 'Membres de la coloc',
+            config: 'Configuration Supabase'
         };
         document.getElementById('page-view-title').textContent = viewTitles[viewId] || 'ColocApp';
 
@@ -201,18 +209,19 @@ const App = {
             window.ShoppingModule.render();
         } else if (viewId === 'issues' && window.IssuesModule) {
             window.IssuesModule.render();
-        } else if (viewId === 'messages' && window.MessagesModule) {
-            window.MessagesModule.render();
-        } else if (viewId === 'inventory' && window.InventoryModule) {
-            window.InventoryModule.render();
+        } else if (viewId === 'expenses' && window.ExpensesModule) {
+            window.ExpensesModule.render();
         } else if (viewId === 'roommates') {
             this.renderRoommatesList();
+        } else if (viewId === 'config') {
+            this.renderConfigView();
         }
     },
 
     onActiveRoommateChanged() {
         // Re-render current view when roommate selection changes
         this.renderViewSpecifics(this.state.activeView);
+        this.updateRoommateDropdowns();
     },
 
     // Modal Helpers
@@ -253,25 +262,13 @@ const App = {
             'cal-select-roommate',
             'cleaning-assignee',
             'issue-assignee',
-            'inventory-owner',
-            'inventory-borrower'
+            'expense-payer'
         ];
 
         roommateDropdownIds.forEach(id => {
             const el = document.getElementById(id);
             if (el) {
-                const isOptional = id === 'inventory-borrower';
-                const hasColocOwner = id === 'inventory-owner';
-                
-                let html = '';
-                if (isOptional) {
-                    html += '<option value="">-- Aucun --</option>';
-                }
-                if (hasColocOwner) {
-                    html += '<option value="coloc">👥 Commun (La colocation)</option>';
-                }
-
-                html += roommates.map(rm => 
+                let html = roommates.map(rm => 
                     `<option value="${rm.id}">${rm.emoji} ${rm.name}</option>`
                 ).join('');
 
@@ -315,6 +312,7 @@ const App = {
             addBtn.addEventListener('click', () => {
                 document.getElementById('roommate-modal-title').textContent = 'Ajouter un colocataire';
                 document.getElementById('roommate-edit-id').value = '';
+                document.getElementById('roommate-hue').value = 180;
                 document.getElementById('roommate-hue-preview').style.backgroundColor = 'hsl(180, 85%, 60%)';
                 
                 // Select first emoji
@@ -451,6 +449,73 @@ const App = {
         }
     },
 
+    /* --- CONFIGURATION BINDINGS --- */
+    bindConfigEvents() {
+        const configForm = document.getElementById('form-supabase-config');
+        if (configForm) {
+            configForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const url = document.getElementById('config-supabase-url').value.trim();
+                const key = document.getElementById('config-supabase-key').value.trim();
+
+                const currentSettings = StorageManager.getSettings();
+                StorageManager.saveSettings({
+                    ...currentSettings,
+                    supabaseUrl: url,
+                    supabaseKey: key
+                });
+
+                alert("Configuration Supabase enregistrée ! Tentative de connexion...");
+                window.location.reload();
+            });
+        }
+
+        const disconnectBtn = document.getElementById('btn-disconnect-supabase');
+        if (disconnectBtn) {
+            disconnectBtn.addEventListener('click', () => {
+                const currentSettings = StorageManager.getSettings();
+                StorageManager.saveSettings({
+                    ...currentSettings,
+                    supabaseUrl: '',
+                    supabaseKey: ''
+                });
+
+                alert("Supabase déconnecté. Retour au mode Local (LocalStorage).");
+                window.location.reload();
+            });
+        }
+
+        const pushDataBtn = document.getElementById('btn-push-local-data');
+        if (pushDataBtn) {
+            pushDataBtn.addEventListener('click', () => {
+                StorageManager.pushAllToSupabase();
+            });
+        }
+
+        const copySqlBtn = document.getElementById('btn-copy-sql');
+        if (copySqlBtn) {
+            copySqlBtn.addEventListener('click', () => {
+                const sqlText = document.getElementById('sql-code-block').textContent;
+                navigator.clipboard.writeText(sqlText)
+                    .then(() => alert("Script SQL copié dans le presse-papiers !"))
+                    .catch(err => console.error("Erreur de copie :", err));
+            });
+        }
+    },
+
+    renderConfigView() {
+        const settings = StorageManager.getSettings();
+        const urlInput = document.getElementById('config-supabase-url');
+        const keyInput = document.getElementById('config-supabase-key');
+
+        if (urlInput) urlInput.value = settings.supabaseUrl || '';
+        if (keyInput) keyInput.value = settings.supabaseKey || '';
+        
+        if (window.StorageManager) {
+            window.StorageManager.updateUIConnectionStatus();
+        }
+    },
+
     /* --- DASHBOARD WIDGET UPDATES --- */
     setupDashboardQuickShopping() {
         const input = document.getElementById('widget-shopping-input');
@@ -489,22 +554,24 @@ const App = {
     },
 
     updateDashboardWidgets() {
-        const todayStr = '2026-06-07'; // Match metadata local time date (June 7th 2026)
-        document.getElementById('dashboard-date').textContent = 'Dimanche 7 Juin 2026';
+        const today = new Date();
+        const todayStr = today.toISOString().split('T')[0];
+        const dayNames = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+        const monthNames = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+        document.getElementById('dashboard-date').textContent = `${dayNames[today.getDay()]} ${today.getDate()} ${monthNames[today.getMonth()]} ${today.getFullYear()}`;
 
         const roommates = StorageManager.getRoommates();
         const calendar = StorageManager.getCalendar();
         const cleaningTasks = StorageManager.getCleaningTasks();
         const shopping = StorageManager.getShopping();
         const issues = StorageManager.getIssues();
-        const messages = StorageManager.getMessages();
 
         // 1. Roommates present today widget
         // An absence covers today if: startDate <= today <= endDate
         const isAbsent = (roommateId) => {
             return calendar.some(evt => 
                 evt.roommateId === roommateId && 
-                evt.type !== 'present' && // Present is a forced return override
+                evt.type === 'roommate_absence' &&
                 evt.startDate <= todayStr && 
                 evt.endDate >= todayStr
             );
@@ -520,7 +587,7 @@ const App = {
                     // Find active event type
                     const activeEvt = calendar.find(evt => 
                         evt.roommateId === rm.id && 
-                        evt.type !== 'present' && 
+                        evt.type === 'roommate_absence' && 
                         evt.startDate <= todayStr && 
                         evt.endDate >= todayStr
                     );
@@ -528,8 +595,15 @@ const App = {
                     let badgeChar = '🏡';
                     let statusLabel = 'Présent';
                     if (absent) {
-                        badgeChar = activeEvt.type === 'vacation' ? '🌴' : (activeEvt.type === 'trip' ? '✈️' : '❌');
-                        statusLabel = activeEvt.type === 'vacation' ? 'En vacances' : (activeEvt.type === 'trip' ? 'Déplacement' : 'Absent');
+                        badgeChar = '❌';
+                        statusLabel = 'Absent';
+                        if (activeEvt.note && activeEvt.note.toLowerCase().includes('vacances')) {
+                            badgeChar = '🌴';
+                            statusLabel = 'En vacances';
+                        } else if (activeEvt.note && activeEvt.note.toLowerCase().includes('déplacement')) {
+                            badgeChar = '✈️';
+                            statusLabel = 'Déplacement pro';
+                        }
                     }
 
                     return `
@@ -552,7 +626,7 @@ const App = {
         if (widgetAbsences) {
             // Absences that finish today or in the future
             const futureAbsences = calendar
-                .filter(evt => evt.endDate >= todayStr && evt.type !== 'present')
+                .filter(evt => evt.endDate >= todayStr && evt.type === 'roommate_absence')
                 .sort((a, b) => a.startDate.localeCompare(b.startDate))
                 .slice(0, 3); // top 3
 
@@ -561,7 +635,6 @@ const App = {
             } else {
                 widgetAbsences.innerHTML = futureAbsences.map(evt => {
                     const rm = window.getRoommate(evt.roommateId);
-                    const typeLabel = evt.type === 'vacation' ? '🌴 Vacances' : (evt.type === 'trip' ? '✈️ Déplacement' : '❌ Absence');
                     
                     // Format dates nicely: YYYY-MM-DD -> DD/MM
                     const fd = (dStr) => {
@@ -569,18 +642,20 @@ const App = {
                         return `${parts[2]}/${parts[1]}`;
                     };
 
-                    const dateString = evt.startDate === evt.endDate ? fd(evt.startDate) : `du ${fd(evt.startDate)} au ${fd(evt.endDate)}`;
+                    const dateString = evt.startDate === evt.endDate 
+                        ? `${fd(evt.startDate)} de ${evt.startTime} à ${evt.endTime}`
+                        : `du ${fd(evt.startDate)} (${evt.startTime}) au ${fd(evt.endDate)} (${evt.endTime})`;
 
                     return `
                         <div class="list-item-summary roommate-border-left" style="--roommate-hue: ${rm.hue}">
                             <div class="list-item-summary-left">
                                 <span>${rm.emoji}</span>
                                 <div class="message-main-col">
-                                    <span class="list-item-title">${rm.name} (${typeLabel})</span>
+                                    <span class="list-item-title">${rm.name} : ${evt.title}</span>
                                     <span class="list-item-sub">${evt.note || 'Aucune note'}</span>
                                 </div>
                             </div>
-                            <span class="absence-dates">${dateString}</span>
+                            <span class="absence-dates" style="font-size: 0.75rem; text-align: right; margin-left: 8px;">${dateString}</span>
                         </div>
                     `;
                 }).join('');
@@ -647,35 +722,55 @@ const App = {
             }
         }
 
-        // 6. Message Wall Widget
-        const widgetMessages = document.getElementById('widget-messages-list');
-        if (widgetMessages) {
-            const recentMessages = messages
+        // 6. Tricount Expenses Widget
+        const widgetExpenses = document.getElementById('widget-expenses-list');
+        if (widgetExpenses && window.ExpensesModule) {
+            const balances = window.ExpensesModule.calculateBalances();
+            const recentExpenses = StorageManager.getExpenses()
                 .slice()
-                .sort((a, b) => new Date(b.date) - new Date(a.date))
-                .slice(0, 3);
+                .sort((a, b) => b.date.localeCompare(a.date))
+                .slice(0, 2); // get top 2 recent
 
-            if (recentMessages.length === 0) {
-                widgetMessages.innerHTML = '<div class="widget-empty-state">Aucun message sur le mur</div>';
+            let html = '';
+
+            // Render roommate balances
+            html += `<div style="font-weight: 600; font-size: 0.8rem; margin-bottom: 6px; text-transform: uppercase; color: var(--text-secondary);">Soldes des colocs :</div>`;
+            html += `<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">`;
+            roommates.forEach(rm => {
+                const bal = balances[rm.id] || 0;
+                const sign = bal > 0 ? '+' : '';
+                const colorClass = bal > 0 ? 'text-success' : (bal < 0 ? 'text-danger' : 'text-muted');
+                html += `
+                    <div class="roommate-badge" style="--roommate-hue: ${rm.hue}; display: flex; gap: 4px;">
+                        <span>${rm.emoji} ${rm.name}</span>
+                        <strong class="${colorClass}">${sign}${bal.toFixed(2)} €</strong>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+
+            // Render last recorded expenses
+            html += `<div style="font-weight: 600; font-size: 0.8rem; margin-bottom: 6px; text-transform: uppercase; color: var(--text-secondary);">Dernières dépenses :</div>`;
+            if (recentExpenses.length === 0) {
+                html += `<div class="widget-empty-state" style="padding: 10px;">Aucune dépense enregistrée</div>`;
             } else {
-                widgetMessages.innerHTML = recentMessages.map(msg => {
-                    const rm = window.getRoommate(msg.roommateId);
-                    
-                    // Format relative date or simple time
-                    const d = new Date(msg.date);
-                    const timeStr = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-
-                    return `
-                        <div class="list-item-summary roommate-border-left" style="--roommate-hue: ${rm.hue}">
-                            <div class="list-item-summary-left" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%;">
-                                <strong>${rm.name} :</strong>
-                                <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 4px;">${msg.text}</span>
+                recentExpenses.forEach(exp => {
+                    const payer = window.getRoommate(exp.payerId);
+                    html += `
+                        <div class="list-item-summary" style="margin-bottom: 6px;">
+                            <div class="list-item-summary-left">
+                                <strong>${exp.amount.toFixed(2)} €</strong>
+                                <span style="margin-left: 6px;">${exp.title}</span>
                             </div>
-                            <span class="list-item-sub" style="flex-shrink: 0; margin-left: 8px;">${timeStr}</span>
+                            <span class="list-item-sub">Payé par ${payer.name}</span>
                         </div>
                     `;
-                }).join('');
+                });
             }
+
+            widgetExpenses.innerHTML = html;
+        } else if (widgetExpenses) {
+            widgetExpenses.innerHTML = `<div class="widget-empty-state">Chargement des dépenses...</div>`;
         }
     },
 

@@ -299,5 +299,6 @@ const CleaningModule = {
     }
 };
 
-// Register globally
+// Initialize and register globally
+CleaningModule.init();
 window.CleaningModule = CleaningModule;
